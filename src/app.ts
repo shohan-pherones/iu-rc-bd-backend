@@ -3,6 +3,7 @@ import express, { Application, Request, Response } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import dbConnect from "./config/dbConnect";
+import router from "./routes";
 import errorHandler from "./utils/errorHandler";
 import notFound from "./utils/notFound";
 
@@ -16,6 +17,8 @@ app.use(express.json());
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({ message: "Server is running perfectly!" });
 });
+
+app.use("/api/v1", router);
 
 dbConnect();
 
