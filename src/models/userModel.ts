@@ -1,33 +1,28 @@
 import mongoose, { Schema } from "mongoose";
 import { Education, User } from "../interfaces";
 
-const educationSchema = new Schema<Education>(
-  {
-    institute: {
-      type: String,
-      required: true,
-    },
-    degree: {
-      type: String,
-      required: true,
-    },
-    department: {
-      type: String,
-      required: true,
-    },
-    batch: {
-      type: String,
-      required: true,
-    },
-    roll: {
-      type: String,
-      required: true,
-    },
+const educationSchema = new Schema<Education>({
+  institute: {
+    type: String,
+    required: true,
   },
-  {
-    timestamps: true,
-  }
-);
+  degree: {
+    type: String,
+    required: true,
+  },
+  department: {
+    type: String,
+    required: true,
+  },
+  batch: {
+    type: String,
+    required: true,
+  },
+  roll: {
+    type: String,
+    required: true,
+  },
+});
 
 const userSchema = new Schema<User>(
   {

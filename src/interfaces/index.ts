@@ -32,11 +32,6 @@ export interface Instructor extends Document {
   designation: string;
 }
 
-export interface Comment extends Document {
-  text: string;
-  user: User;
-}
-
 export interface Workshop extends Document {
   name: string;
   banner?: string;
@@ -50,4 +45,10 @@ export interface Workshop extends Document {
   instructors: Instructor[];
   users: User[];
   comments: Comment[];
+}
+
+export interface Comment extends Document {
+  text: string;
+  user: User;
+  workshop: Workshop;
 }
