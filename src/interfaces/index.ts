@@ -1,4 +1,5 @@
 import { Document } from "mongoose";
+import { USER_ROLE } from "../constants";
 
 export interface Education extends Document {
   institute: string;
@@ -52,3 +53,5 @@ export interface Comment extends Document {
   user: User;
   workshop: Workshop;
 }
+
+export type UserRole = keyof typeof USER_ROLE;

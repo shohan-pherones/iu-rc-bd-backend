@@ -1,13 +1,10 @@
 import cors from "cors";
-import dotenv from "dotenv";
 import express, { Application, Request, Response } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
-import dbConnect from "./utils/dbConnect";
+import dbConnect from "./config/dbConnect";
 import errorHandler from "./utils/errorHandler";
 import notFound from "./utils/notFound";
-
-dotenv.config();
 
 const app: Application = express();
 
