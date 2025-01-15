@@ -4,6 +4,8 @@ import express, { Application, Request, Response } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import dbConnect from "./utils/dbConnect";
+import errorHandler from "./utils/errorHandler";
+import notFound from "./utils/notFound";
 
 dotenv.config();
 
@@ -19,5 +21,8 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 dbConnect();
+
+app.use(notFound);
+app.use(errorHandler);
 
 export default app;
