@@ -1,9 +1,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { AuthServices } from "../services/authServices";
-import AppError from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
-import { uploadImage } from "../utils/multerUtils";
 import { sendResponse } from "../utils/sendResponse";
 
 const register = catchAsync(async (req: Request, res: Response) => {
@@ -35,7 +33,19 @@ const login = catchAsync(async (req: Request, res: Response) => {
     password
   );
 
-  sendResponse(res, StatusCodes.CREATED, "User logged in successfully", {
+  sendResponse(res, StatusCodes.OK, "User logged in successfully", {
+    accessToken,
+    refreshToken,
+    user,
+  });
+});
+
+const refreshToken = catchAsync(async (req: Request, res: Response) => {
+  const refreshToken = req.headers["x-refresh-token"] as string;
+
+  const { accessToken, user } = await AuthServices.refreshToken(refreshToken);
+
+  sendResponse(res, StatusCodes.OK, "Access token retrieved successfully", {
     accessToken,
     refreshToken,
     user,
@@ -45,4 +55,5 @@ const login = catchAsync(async (req: Request, res: Response) => {
 export const AuthControllers = {
   register,
   login,
+  refreshToken,
 };

@@ -4,7 +4,7 @@ import envConfig from "../config/envConfig";
 import { User } from "../interfaces";
 import UserModel from "../models/userModel";
 import AppError from "../utils/appError";
-import { createToken } from "../utils/jwtHandlers";
+import { createToken, verifyToken } from "../utils/jwtHandlers";
 
 const register = async (userData: User) => {
   const existingUser = await UserModel.findOne({ email: userData.email });
@@ -81,7 +81,49 @@ const login = async (email: string, password: string) => {
   return { accessToken, refreshToken, user };
 };
 
+const refreshToken = async (token: string) => {
+  try {
+    const { userId } = verifyToken(
+      token,
+      envConfig.jwt_refresh_secret as string
+    );
+
+    if (!userId) {
+      throw new AppError(StatusCodes.UNAUTHORIZED, "Invalid token payload");
+    }
+
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+      throw new AppError(StatusCodes.NOT_FOUND, "User not found");
+    }
+
+    const jwtPayload = {
+      userId: user.id,
+      role: user.role,
+    };
+
+    const accessToken = createToken(
+      jwtPayload,
+      envConfig.jwt_access_secret as string,
+      envConfig.jwt_access_expires_in as string
+    );
+
+    return { accessToken, user };
+  } catch (error) {
+    if (error instanceof AppError) {
+      throw error;
+    }
+
+    throw new AppError(
+      StatusCodes.INTERNAL_SERVER_ERROR,
+      "Something went wrong during token refresh"
+    );
+  }
+};
+
 export const AuthServices = {
   register,
   login,
+  refreshToken,
 };
