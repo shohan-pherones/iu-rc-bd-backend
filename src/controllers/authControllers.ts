@@ -41,9 +41,11 @@ const login = catchAsync(async (req: Request, res: Response) => {
 });
 
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
-  const refreshToken = req.headers["x-refresh-token"] as string;
+  const token = req.headers["x-refresh-token"] as string;
 
-  const { accessToken, user } = await AuthServices.refreshToken(refreshToken);
+  const { accessToken, refreshToken, user } = await AuthServices.refreshToken(
+    token
+  );
 
   sendResponse(res, StatusCodes.OK, "Access token retrieved successfully", {
     accessToken,

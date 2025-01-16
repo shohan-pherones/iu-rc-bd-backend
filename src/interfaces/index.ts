@@ -55,3 +55,9 @@ export interface Comment extends Document {
 }
 
 export type UserRole = keyof typeof USER_ROLE;
+
+export interface Auth {
+  accessToken: string;
+  refreshToken: string;
+  user: User;
+}

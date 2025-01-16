@@ -1,12 +1,12 @@
 import bcrypt from "bcrypt";
 import { StatusCodes } from "http-status-codes";
 import envConfig from "../config/envConfig";
-import { User } from "../interfaces";
+import { Auth, User } from "../interfaces";
 import UserModel from "../models/userModel";
 import AppError from "../utils/appError";
 import { createToken, verifyToken } from "../utils/jwtHandlers";
 
-const register = async (userData: User) => {
+const register = async (userData: User): Promise<Auth> => {
   const existingUser = await UserModel.findOne({ email: userData.email });
 
   if (existingUser) {
@@ -45,7 +45,7 @@ const register = async (userData: User) => {
   return { accessToken, refreshToken, user };
 };
 
-const login = async (email: string, password: string) => {
+const login = async (email: string, password: string): Promise<Auth> => {
   const user = await UserModel.findOne({ email });
 
   if (!user) {
@@ -81,7 +81,7 @@ const login = async (email: string, password: string) => {
   return { accessToken, refreshToken, user };
 };
 
-const refreshToken = async (token: string) => {
+const refreshToken = async (token: string): Promise<Auth> => {
   try {
     const { userId } = verifyToken(
       token,
@@ -109,7 +109,7 @@ const refreshToken = async (token: string) => {
       envConfig.jwt_access_expires_in as string
     );
 
-    return { accessToken, user };
+    return { accessToken, refreshToken: token, user };
   } catch (error) {
     if (error instanceof AppError) {
       throw error;
