@@ -1,7 +1,9 @@
 import { StatusCodes } from "http-status-codes";
-import { User } from "../interfaces";
+import envConfig from "../config/envConfig";
+import { Auth, User } from "../interfaces";
 import UserModel from "../models/userModel";
 import AppError from "../utils/appError";
+import { createToken } from "../utils/jwtHandlers";
 
 const getLoggedInUser = async (userId: string): Promise<User> => {
   const user = await UserModel.findById(userId);
@@ -16,7 +18,7 @@ const getLoggedInUser = async (userId: string): Promise<User> => {
 const updateLoggedInUser = async (
   userId: string,
   userData: Partial<User>
-): Promise<User> => {
+): Promise<Auth> => {
   const { education, ...restUserData } = userData;
 
   const updatedUserData: Record<string, unknown> = { ...restUserData };
@@ -39,7 +41,24 @@ const updateLoggedInUser = async (
     );
   }
 
-  return user;
+  const jwtPayload = {
+    userId: user.id,
+    role: user.role,
+  };
+
+  const accessToken = createToken(
+    jwtPayload,
+    envConfig.jwt_access_secret as string,
+    envConfig.jwt_access_expires_in as string
+  );
+
+  const refreshToken = createToken(
+    jwtPayload,
+    envConfig.jwt_refresh_secret as string,
+    envConfig.jwt_refresh_expires_in as string
+  );
+
+  return { accessToken, refreshToken, user };
 };
 
 const deleteLoggedInUser = async (

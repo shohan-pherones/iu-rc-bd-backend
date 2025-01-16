@@ -25,6 +25,8 @@ export interface User extends Document {
   education: Education;
   comments: Comment[];
   workshops: Workshop[];
+  createdAt: Date;
+  points: number;
 }
 
 export interface Instructor extends Document {

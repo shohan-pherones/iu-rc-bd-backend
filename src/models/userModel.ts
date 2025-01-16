@@ -86,6 +86,7 @@ const userSchema = new Schema<User>(
         ref: "Workshop",
       },
     ],
+    points: { type: Number, default: 0, required: true },
   },
   {
     timestamps: true,

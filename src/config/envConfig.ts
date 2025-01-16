@@ -18,4 +18,5 @@ export default {
   smtp_user: process.env.SMTP_USER,
   smtp_pass: process.env.SMTP_PASS,
   frontend_url: process.env.FRONTEND_URL,
+  volunteer_pass: process.env.VOLUNTEER_PASS,
 };
