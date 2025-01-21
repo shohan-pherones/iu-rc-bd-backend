@@ -57,9 +57,17 @@ const updateWorkshop = catchAsync(async (req: Request, res: Response) => {
     // banner,
   });
 
-  sendResponse(res, StatusCodes.CREATED, "Workshop updated successfully", {
+  sendResponse(res, StatusCodes.OK, "Workshop updated successfully", {
     workshop,
   });
+});
+
+const deleteWorkshop = catchAsync(async (req: Request, res: Response) => {
+  const { workshopId } = req.params;
+
+  const { message } = await WorkshopServices.deleteWorkshop(workshopId);
+
+  sendResponse(res, StatusCodes.OK, message, null);
 });
 
 export const WorkshopControllers = {
@@ -67,4 +75,5 @@ export const WorkshopControllers = {
   getWorkshop,
   createWorkshop,
   updateWorkshop,
+  deleteWorkshop,
 };

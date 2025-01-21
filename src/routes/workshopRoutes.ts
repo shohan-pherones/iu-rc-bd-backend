@@ -28,4 +28,10 @@ router.put(
   WorkshopControllers.updateWorkshop
 );
 
+router.delete(
+  "/:workshopId",
+  auth(USER_ROLE.admin),
+  WorkshopControllers.deleteWorkshop
+);
+
 export default router;

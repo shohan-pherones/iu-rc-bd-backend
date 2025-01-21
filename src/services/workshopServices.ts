@@ -136,9 +136,22 @@ const updateWorkshop = async (
   return workshop;
 };
 
+const deleteWorkshop = async (
+  workshopId: string
+): Promise<{ message: string }> => {
+  const workshop = await WorkshopModel.findByIdAndDelete(workshopId);
+
+  if (!workshop) {
+    throw new AppError(StatusCodes.NOT_FOUND, "Workshop not found");
+  }
+
+  return { message: "Workshop successfully deleted" };
+};
+
 export const WorkshopServices = {
   getWorkshops,
   getWorkshop,
   createWorkshop,
   updateWorkshop,
+  deleteWorkshop,
 };
