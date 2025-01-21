@@ -70,10 +70,23 @@ const deleteWorkshop = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, StatusCodes.OK, message, null);
 });
 
+const registerWorkshop = catchAsync(async (req: Request, res: Response) => {
+  const { workshopId } = req.params;
+  const { userId } = req.user;
+
+  const { message } = await WorkshopServices.registerWorkshop(
+    workshopId,
+    userId
+  );
+
+  sendResponse(res, StatusCodes.OK, message, null);
+});
+
 export const WorkshopControllers = {
   getWorkshops,
   getWorkshop,
   createWorkshop,
   updateWorkshop,
   deleteWorkshop,
+  registerWorkshop,
 };

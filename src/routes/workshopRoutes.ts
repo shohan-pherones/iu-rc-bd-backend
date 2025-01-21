@@ -34,4 +34,10 @@ router.delete(
   WorkshopControllers.deleteWorkshop
 );
 
+router.post(
+  "/:workshopId/register",
+  auth(USER_ROLE.user, USER_ROLE.member),
+  WorkshopControllers.registerWorkshop
+);
+
 export default router;

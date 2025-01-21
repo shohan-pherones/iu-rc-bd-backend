@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document, ObjectId } from "mongoose";
 import { USER_ROLE } from "../constants";
 
 export interface Education extends Document {
@@ -21,12 +21,20 @@ export interface User extends Document {
   role: "user" | "member" | "admin";
   photo?: string;
   dateOfBirth?: Date;
-  hobbies?: string[];
-  education: Education;
-  comments: Comment[];
-  workshops: Workshop[];
-  createdAt: Date;
   points: number;
+  createdAt: Date;
+  education: Education;
+  hobbies?: string[];
+  comments: ObjectId[];
+  workshops: ObjectId[];
+}
+
+export type UserRole = keyof typeof USER_ROLE;
+
+export interface Auth {
+  accessToken: string;
+  refreshToken: string;
+  user: User;
 }
 
 export interface Instructor extends Document {
@@ -36,6 +44,7 @@ export interface Instructor extends Document {
 }
 
 export interface Workshop extends Document {
+  _id: ObjectId;
   name: string;
   banner?: string;
   description: string;
@@ -46,20 +55,12 @@ export interface Workshop extends Document {
   duration: number;
   status: "upcoming" | "running" | "past";
   instructors: Instructor[];
-  users: User[];
-  comments: Comment[];
+  users: ObjectId[];
+  comments: ObjectId[];
 }
 
 export interface Comment extends Document {
   text: string;
-  user: User;
-  workshop: Workshop;
-}
-
-export type UserRole = keyof typeof USER_ROLE;
-
-export interface Auth {
-  accessToken: string;
-  refreshToken: string;
-  user: User;
+  user: ObjectId;
+  workshop: ObjectId;
 }
