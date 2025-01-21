@@ -8,10 +8,10 @@ const express_1 = __importDefault(require("express"));
 const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
 const dbConnect_1 = __importDefault(require("./config/dbConnect"));
+const envConfig_1 = __importDefault(require("./config/envConfig"));
 const routes_1 = __importDefault(require("./routes"));
 const errorHandler_1 = __importDefault(require("./utils/errorHandler"));
 const notFound_1 = __importDefault(require("./utils/notFound"));
-const envConfig_1 = __importDefault(require("./config/envConfig"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
     origin: envConfig_1.default.frontend_url,

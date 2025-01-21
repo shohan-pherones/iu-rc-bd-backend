@@ -3,10 +3,10 @@ import express, { Application, Request, Response } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import dbConnect from "./config/dbConnect";
+import envConfig from "./config/envConfig";
 import router from "./routes";
 import errorHandler from "./utils/errorHandler";
 import notFound from "./utils/notFound";
-import envConfig from "./config/envConfig";
 
 const app: Application = express();
 
