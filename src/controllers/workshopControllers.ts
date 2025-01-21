@@ -22,7 +22,27 @@ const getWorkshop = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const createWorkshop = catchAsync(async (req: Request, res: Response) => {
+  // const imageFile = req.file as Express.Multer.File;
+
+  // if (!imageFile) {
+  //   throw new AppError(StatusCodes.BAD_REQUEST, "Image is required");
+  // }
+
+  // const banner = await uploadImage(imageFile);
+
+  const workshop = await WorkshopServices.createWorkshop({
+    ...req.body,
+    // banner,
+  });
+
+  sendResponse(res, StatusCodes.CREATED, "Workshop created successfully", {
+    workshop,
+  });
+});
+
 export const WorkshopControllers = {
   getWorkshops,
   getWorkshop,
+  createWorkshop,
 };

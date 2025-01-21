@@ -15,7 +15,18 @@ const getLoggedInUser = catchAsync(async (req: Request, res: Response) => {
 const updateLoggedInUser = catchAsync(async (req: Request, res: Response) => {
   const { userId } = req.user;
 
-  const user = await UserServices.updateLoggedInUser(userId, req.body);
+  // const imageFile = req.file as Express.Multer.File;
+
+  // if (!imageFile) {
+  //   throw new AppError(StatusCodes.BAD_REQUEST, "Image is required");
+  // }
+
+  // const photo = await uploadImage(imageFile);
+
+  const user = await UserServices.updateLoggedInUser(userId, {
+    ...req.body,
+    // photo,
+  });
 
   sendResponse(res, StatusCodes.OK, "User updated successfully", {
     user,

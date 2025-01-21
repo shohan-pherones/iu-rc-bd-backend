@@ -51,6 +51,7 @@ const workshopSchema = new Schema<Workshop>(
     status: {
       type: String,
       enum: ["upcoming", "running", "past"],
+      default: "upcoming",
       required: true,
     },
     instructors: [instructorSchema],
