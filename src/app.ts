@@ -6,10 +6,15 @@ import dbConnect from "./config/dbConnect";
 import router from "./routes";
 import errorHandler from "./utils/errorHandler";
 import notFound from "./utils/notFound";
+import envConfig from "./config/envConfig";
 
 const app: Application = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: envConfig.frontend_url,
+  })
+);
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(express.json());

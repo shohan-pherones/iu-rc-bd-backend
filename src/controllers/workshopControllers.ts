@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { WorkshopServices } from "../services/workshopServices";
+import AppError from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
+import { uploadImage } from "../utils/multerUtils";
 import { sendResponse } from "../utils/sendResponse";
 
 const getWorkshops = catchAsync(async (req: Request, res: Response) => {
@@ -23,17 +25,17 @@ const getWorkshop = catchAsync(async (req: Request, res: Response) => {
 });
 
 const createWorkshop = catchAsync(async (req: Request, res: Response) => {
-  // const imageFile = req.file as Express.Multer.File;
+  const imageFile = req.file as Express.Multer.File;
 
-  // if (!imageFile) {
-  //   throw new AppError(StatusCodes.BAD_REQUEST, "Image is required");
-  // }
+  if (!imageFile) {
+    throw new AppError(StatusCodes.BAD_REQUEST, "Image is required");
+  }
 
-  // const banner = await uploadImage(imageFile);
+  const banner = await uploadImage(imageFile);
 
   const workshop = await WorkshopServices.createWorkshop({
     ...req.body,
-    // banner,
+    banner,
   });
 
   sendResponse(res, StatusCodes.CREATED, "Workshop created successfully", {
@@ -44,17 +46,17 @@ const createWorkshop = catchAsync(async (req: Request, res: Response) => {
 const updateWorkshop = catchAsync(async (req: Request, res: Response) => {
   const { workshopId } = req.params;
 
-  // const imageFile = req.file as Express.Multer.File;
+  const imageFile = req.file as Express.Multer.File;
 
-  // if (!imageFile) {
-  //   throw new AppError(StatusCodes.BAD_REQUEST, "Image is required");
-  // }
+  if (!imageFile) {
+    throw new AppError(StatusCodes.BAD_REQUEST, "Image is required");
+  }
 
-  // const banner = await uploadImage(imageFile);
+  const banner = await uploadImage(imageFile);
 
   const workshop = await WorkshopServices.updateWorkshop(workshopId, {
     ...req.body,
-    // banner,
+    banner,
   });
 
   sendResponse(res, StatusCodes.OK, "Workshop updated successfully", {

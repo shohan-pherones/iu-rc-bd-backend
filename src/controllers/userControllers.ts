@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { UserServices } from "../services/userServices";
+import AppError from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
+import { uploadImage } from "../utils/multerUtils";
 import { sendResponse } from "../utils/sendResponse";
 
 const getLoggedInUser = catchAsync(async (req: Request, res: Response) => {
@@ -15,17 +17,17 @@ const getLoggedInUser = catchAsync(async (req: Request, res: Response) => {
 const updateLoggedInUser = catchAsync(async (req: Request, res: Response) => {
   const { userId } = req.user;
 
-  // const imageFile = req.file as Express.Multer.File;
+  const imageFile = req.file as Express.Multer.File;
 
-  // if (!imageFile) {
-  //   throw new AppError(StatusCodes.BAD_REQUEST, "Image is required");
-  // }
+  if (!imageFile) {
+    throw new AppError(StatusCodes.BAD_REQUEST, "Image is required");
+  }
 
-  // const photo = await uploadImage(imageFile);
+  const photo = await uploadImage(imageFile);
 
   const user = await UserServices.updateLoggedInUser(userId, {
     ...req.body,
-    // photo,
+    photo,
   });
 
   sendResponse(res, StatusCodes.OK, "User updated successfully", {

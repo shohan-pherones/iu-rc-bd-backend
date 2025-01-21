@@ -17,7 +17,7 @@ router.get(
 router.put(
   "/me",
   auth(USER_ROLE.user, USER_ROLE.member, USER_ROLE.admin),
-  // upload.single("photo"),
+  upload.single("photo"),
   validate(UserValidations.updateUserSchema),
   UserControllers.updateLoggedInUser
 );

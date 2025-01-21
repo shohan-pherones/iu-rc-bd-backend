@@ -1,9 +1,9 @@
 import express, { Router } from "express";
 import AuthRoutes from "./authRoutes";
+import CommentRoutes from "./commentRoutes";
 import MembershipRoutes from "./membershipRoutes";
 import UserRoutes from "./userRoutes";
 import WorkshopRoutes from "./workshopRoutes";
-import CommentRoutes from "./commentRoutes";
 
 const router: Router = express.Router();
 

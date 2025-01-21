@@ -50,7 +50,7 @@ const createComment = async (
     if (sentimentScore > 0) {
       user.points += 10;
     } else if (sentimentScore < 0) {
-      if (user.points > 10) {
+      if (user.points >= 10) {
         user.points -= 10;
       }
     } else {
