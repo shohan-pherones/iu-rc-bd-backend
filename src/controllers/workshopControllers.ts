@@ -41,8 +41,30 @@ const createWorkshop = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateWorkshop = catchAsync(async (req: Request, res: Response) => {
+  const { workshopId } = req.params;
+
+  // const imageFile = req.file as Express.Multer.File;
+
+  // if (!imageFile) {
+  //   throw new AppError(StatusCodes.BAD_REQUEST, "Image is required");
+  // }
+
+  // const banner = await uploadImage(imageFile);
+
+  const workshop = await WorkshopServices.updateWorkshop(workshopId, {
+    ...req.body,
+    // banner,
+  });
+
+  sendResponse(res, StatusCodes.CREATED, "Workshop updated successfully", {
+    workshop,
+  });
+});
+
 export const WorkshopControllers = {
   getWorkshops,
   getWorkshop,
   createWorkshop,
+  updateWorkshop,
 };

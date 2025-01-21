@@ -20,4 +20,12 @@ router.post(
 
 router.get("/:workshopId", WorkshopControllers.getWorkshop);
 
+router.put(
+  "/:workshopId",
+  auth(USER_ROLE.admin),
+  // upload.single("banner"),
+  validate(WorkshopValidations.workshopSchema),
+  WorkshopControllers.updateWorkshop
+);
+
 export default router;

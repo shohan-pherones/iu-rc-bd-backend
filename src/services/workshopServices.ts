@@ -70,8 +70,75 @@ const createWorkshop = async (workshopData: Workshop): Promise<Workshop> => {
   return workshop;
 };
 
+const updateWorkshop = async (
+  workshopId: string,
+  workshopData: Workshop
+): Promise<Workshop> => {
+  const currentTime = new Date();
+
+  if (new Date(workshopData.deadline) <= currentTime) {
+    throw new AppError(
+      StatusCodes.BAD_REQUEST,
+      "The deadline must be in the future."
+    );
+  }
+
+  if (workshopData.maxAttendee < 100) {
+    throw new AppError(
+      StatusCodes.BAD_REQUEST,
+      "The maximum attendees must be at least 100."
+    );
+  }
+
+  const threeDaysInMillis = 3 * 24 * 60 * 60 * 1000;
+
+  if (
+    new Date(workshopData.dateTime) <= currentTime ||
+    new Date(workshopData.dateTime).getTime() <
+      new Date(workshopData.deadline).getTime() + threeDaysInMillis
+  ) {
+    throw new AppError(
+      StatusCodes.BAD_REQUEST,
+      "The workshop date must be at least 3 days after the deadline and in the future."
+    );
+  }
+
+  if (workshopData.duration < 3 || workshopData.duration > 8) {
+    throw new AppError(
+      StatusCodes.BAD_REQUEST,
+      "The workshop duration must be between 3 and 8 hours."
+    );
+  }
+
+  if (!workshopData.instructors || workshopData.instructors.length === 0) {
+    throw new AppError(
+      StatusCodes.BAD_REQUEST,
+      "The workshop must have at least one instructor."
+    );
+  }
+
+  const workshop = await WorkshopModel.findByIdAndUpdate(
+    workshopId,
+    workshopData,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  if (!workshop) {
+    throw new AppError(
+      StatusCodes.INTERNAL_SERVER_ERROR,
+      "Error while updating workshop"
+    );
+  }
+
+  return workshop;
+};
+
 export const WorkshopServices = {
   getWorkshops,
   getWorkshop,
   createWorkshop,
+  updateWorkshop,
 };
