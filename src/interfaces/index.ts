@@ -60,7 +60,9 @@ export interface Workshop extends Document {
 }
 
 export interface Comment extends Document {
+  _id: ObjectId;
   text: string;
+  sentiment: number;
   user: ObjectId;
   workshop: ObjectId;
 }
