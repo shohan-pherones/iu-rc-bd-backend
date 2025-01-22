@@ -9,6 +9,7 @@ const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
 const dbConnect_1 = __importDefault(require("./config/dbConnect"));
 const envConfig_1 = __importDefault(require("./config/envConfig"));
+require("./crons/workshopCrons");
 const routes_1 = __importDefault(require("./routes"));
 const errorHandler_1 = __importDefault(require("./utils/errorHandler"));
 const notFound_1 = __importDefault(require("./utils/notFound"));
